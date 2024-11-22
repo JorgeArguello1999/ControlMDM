@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import HTTPException
+from fastapi import APIRouter
+from fastapi import Depends
 
 # Database
 from sqlalchemy.orm import Session
@@ -15,6 +17,7 @@ def con_database():
 
 # Schemas
 from auth.schemas import UserResponse
+from auth.schemas import UserCreate
 
 router = APIRouter()
 
@@ -25,8 +28,14 @@ def get_users(db: Session = Depends(con_database)):
     return users
 
 # Add User
-@router.post('/')
-def post_user(user:dict):
+@router.post('/', response_model=list(UserResponse))
+def post_user(user: UserCreate, db: Session = Depends(con_database)):
+    # User exist? 
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if db_user:
+        raise HTTPException(status_code=200, detail="Your Email alredy registered")
+    
+    # Save new user
     return user
 
 # Delete User
