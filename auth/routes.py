@@ -22,6 +22,7 @@ from auth.schemas import UpdateUser
 
 # Tools 
 from tools import adduser
+from tools import encrypt
 
 router = APIRouter()
 
@@ -62,11 +63,10 @@ def put_user(user: UpdateUser, db: Session = Depends(con_database)):
 
     # Update User
     try:
-        print(user)
         if not user.name and user.email and user.new_password and user.old_password:
             raise HTTPException(status_code=404, detail="Your data isn't correct")
 
-        if user.old_password != user.new_password: 
+        if encrypt.verify_password(user.old_password, db_user.password) != True: 
             raise HTTPException(status_code=404, detail="Old password isn't correct")
 
         db_user.id = db_user.id 
