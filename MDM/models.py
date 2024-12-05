@@ -12,8 +12,6 @@ class Device(Base):
     wifi_ssid = Column(String, nullable=True)
     os_version = Column(String, nullable=False)
 
-    # User relation
-    user_devices = relationship("UserDevice", back_populates="device")
 
 class UserDevice(Base):
     __tablename__ = "user_devices"
@@ -21,6 +19,7 @@ class UserDevice(Base):
     user_id = Column(Integer, ForeignKey("user_auth.id"), nullable=False)
     device_id = Column(Integer, ForeignKey("devices.id"), nullable=False)
 
-    # Relations
-    user = relationship("User", back_populates="user_devices")
-    device = relationship("Device", back_populates="user_devices")
+# Relations
+user_devices = relationship("UserDevice", back_populates="device")
+user = relationship("User", back_populates="user_devices")
+device = relationship("Device", back_populates="user_devices")
