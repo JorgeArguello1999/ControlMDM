@@ -4,6 +4,11 @@ from fastapi import FastAPI
 from auth.routes import router as auth_router
 from MDM.routes import router as mdm_router
 
+# Database
+from tools.database import Base, engine
+from auth.models import User
+
+# Env
 from dotenv import load_dotenv
 from os import getenv
 load_dotenv()
@@ -21,3 +26,5 @@ def read_root():
 # LOGs
 print(f"DATABASE: {getenv('DATABASE_URL')}")
 
+# Create Database
+Base.metadata.create_all(bind=engine)

@@ -3,13 +3,13 @@ from fastapi import APIRouter
 from fastapi import Depends
 
 # Database
+from tools.database import SessionLocal
 from sqlalchemy.orm import Session
 from auth.models import User
-from auth import models
 
 # Create database connection
 def con_database():
-    db = models.localsession()
+    db = SessionLocal()
     try:
         yield db
     finally:
