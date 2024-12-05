@@ -18,7 +18,7 @@ class User(Base):
 
 # Database config
 DATABASE_URL = getenv('DATABASE_URL')
-engine = create_engine(DATABASE_URL)
+engine = create_engine(str(DATABASE_URL))
 localsession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Create table

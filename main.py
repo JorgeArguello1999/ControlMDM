@@ -16,3 +16,4 @@ def read_root():
 
 # LOGs
 print(f"DATABASE: {getenv('DATABASE_URL')}")
+

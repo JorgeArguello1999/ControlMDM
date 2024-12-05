@@ -81,7 +81,7 @@ def put_user(user: UpdateUser, db: Session = Depends(con_database)):
         return db_user          
 
     except Exception as e:
-        raise HTTPException(status_code=200, detail=f"Problem with your data {e}")
+        raise HTTPException(status_code=200, detail=f"Problem with your data: {e}")
 
 
 # Delete User
