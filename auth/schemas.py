@@ -21,3 +21,8 @@ class UpdateUser(BaseModel):
     email: str | None = None
     old_password: str | None = None 
     new_password: str | None = None
+
+# Delete User
+class DeleteUser(BaseModel):
+    email: str 
+    password: str

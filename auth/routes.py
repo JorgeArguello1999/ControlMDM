@@ -17,6 +17,7 @@ def con_database():
 
 # Schemas
 from auth.schemas import UserResponse
+from auth.schemas import DeleteUser
 from auth.schemas import UserCreate
 from auth.schemas import UpdateUser
 
@@ -89,6 +90,22 @@ def put_user(user: UpdateUser, db: Session = Depends(con_database)):
 
 
 # Delete User
-@router.delete('/')
-def delete_user(user:dict):
-    return user
+@router.delete('/', status_code=204)
+def delete_user(user: DeleteUser, db: Session = Depends(con_database)):
+    # Search the user
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user: raise HTTPException(status_code=4040, detail="User not found")
+
+    # Password check 
+    if not encrypt.verify_password(user.password, db_user.password): 
+        raise HTTPException(status_code=403, detail="Incorrect Password")
+
+    # Delete user
+    try:
+        db.delete(db_user)
+        db.commit()
+
+    except Exception as e:
+        raise HTTPException(status_code=200, detail=f"Problem with process: {e}")
+    
+    return {"message": "User successfully deleted"}
