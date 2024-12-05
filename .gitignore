@@ -5,3 +5,4 @@ database.db
 **/__pycache__/
 auth/__pycache__/*
 ./__pycache__/
+__pycache__/
