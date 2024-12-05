@@ -44,7 +44,6 @@ def post_user(user: UserCreate, db: Session = Depends(con_database)):
     # Save new user
     try: 
         user = adduser.add_user(user)
-        print(user)
         user = User(name=user['name'], email=user['email'], password=user['password'])
         db.add(user)
         db.commit()
