@@ -10,5 +10,5 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
 
-# Relación con dispositivos (tabla intermedia)
-user_devices = relationship("UserDevice", back_populates="user")
+    # Relations
+    user_devices = relationship("UserDevice", back_populates="user")

@@ -8,8 +8,9 @@ from MDM.routes import router as mdm_router
 from tools.database import Base, engine
 
 # Models 
-from MDM.models import Device, UserDevice
 from auth.models import User
+from MDM.models import Device
+from MDM.models import UserDevice
 
 # Env
 from dotenv import load_dotenv

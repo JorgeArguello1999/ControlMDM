@@ -7,3 +7,12 @@ class DeviceResponse(BaseModel):
     ip_address: str | None = None
     wifi_ssid: str | None = None
     os_version: str | None = None
+
+    class Config:
+        from_attributes = True
+
+class UserDevicesResponse(BaseModel):
+    devices: list[DeviceResponse]
+
+    class Config:
+        from_attributes = True

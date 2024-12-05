@@ -16,13 +16,30 @@ def con_database():
 
 # Schemas
 from MDM.schemas import DeviceResponse
+from MDM.schemas import UserDevicesResponse
+
+# Models
+from auth.models import User
+from MDM.models import UserDevice 
+from MDM.models import Device
 
 # Tools
 router = APIRouter()
 
 # List User
-@router.get("/", response_model=list[DeviceResponse])
-def get_users(db: Session = Depends(con_database)):
-    devices = db.query(DeviceResponse).all()
-    return devices 
-
+@router.get("/users/{user_id}/devices", response_model=UserDevicesResponse)
+def get_user_devices(user_id: int, db: Session = Depends(con_database)):
+    # Find User
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Devices from user
+    user_devices = (
+        db.query(Device)
+        .join(UserDevice, Device.id == UserDevice.device_id)
+        .filter(UserDevice.user_id == user_id)
+        .all()
+    )
+    
+    return {"devices": user_devices}
