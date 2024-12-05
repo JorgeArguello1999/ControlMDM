@@ -3,33 +3,26 @@ from fastapi import APIRouter
 from fastapi import Depends
 
 # Database
+from tools.database import SessionLocal
 from sqlalchemy.orm import Session
-from auth.models import User
-from auth import models
 
 # Create database connection
 def con_database():
-    db = models.localsession()
+    db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
 
 # Schemas
-from auth.schemas import UserResponse
-from auth.schemas import DeleteUser
-from auth.schemas import UserCreate
-from auth.schemas import UpdateUser
+from MDM.schemas import DeviceResponse
 
-# Tools 
-from tools import adduser
-from tools import encrypt
-
+# Tools
 router = APIRouter()
 
 # List User
-@router.get("/", response_model=list[UserResponse])
+@router.get("/", response_model=list[DeviceResponse])
 def get_users(db: Session = Depends(con_database)):
-    users = db.query(User).all()
-    return users
+    devices = db.query(DeviceResponse).all()
+    return devices 
 

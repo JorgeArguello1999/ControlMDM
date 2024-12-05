@@ -6,6 +6,9 @@ from MDM.routes import router as mdm_router
 
 # Database
 from tools.database import Base, engine
+
+# Models 
+from MDM.models import Device, UserDevice
 from auth.models import User
 
 # Env
