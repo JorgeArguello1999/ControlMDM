@@ -69,10 +69,14 @@ def put_user(user: UpdateUser, db: Session = Depends(con_database)):
         if encrypt.verify_password(user.old_password, db_user.password) != True: 
             raise HTTPException(status_code=404, detail="Old password isn't correct")
 
+        if user.old_password == user.new_password: 
+            raise HTTPException(status_code=200, detail="Your old password and the new password is the same")
+        
+        # Create class with new data
         db_user.id = db_user.id 
         db_user.name = user.name
         db_user.email = user.email
-        db_user.password = user.new_password
+        db_user.password = encrypt.encrypt_password(user.new_password)
 
         # Save the changes
         db.commit()
