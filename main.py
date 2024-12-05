@@ -1,5 +1,8 @@
 from fastapi import FastAPI
+
+# Routes 
 from auth.routes import router as auth_router
+from MDM.routes import router as mdm_router
 
 from dotenv import load_dotenv
 from os import getenv
@@ -9,6 +12,7 @@ app = FastAPI()
 
 # Registering routes
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
+app.include_router(mdm_router, prefix="/mdm", tags=["MDM"])
 
 @app.get("/")
 def read_root():
